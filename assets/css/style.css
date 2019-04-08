@@ -1,0 +1,78 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-image: url(../images/body-background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-sizing: border-box;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-family: 'Indie Flower', cursive;
+}
+
+header {
+    text-align: center;
+    height: 20%;
+    width: 100%;
+}
+
+h1 {
+    font-size: 3em;
+    padding: 0.5em;
+}
+
+.container {
+    margin: auto;
+}
+
+.container.cheese {
+    background-image: url(../images/div-background.jpg);
+    justify-self: center;
+    width: 80%;
+    padding: 1em;
+    margin: auto;
+    text-align: center;
+    height: min-content;
+    font-size: 2em;
+}
+
+button {
+    font-size: 1.5em;
+    height: 100px;
+    width: 300px;
+}
+
+.question {
+    padding: 0.5em 0 1.5em 0;
+    border-bottom: 2px solid black;
+}
+
+.answers {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.5em;
+    padding: 0.5em;
+}
+
+.answers > p {
+    padding: 0.25em;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 0.5em;
+}
+
+.answers > p:hover {
+    background-color: black;
+    opacity: 0.6;
+    color: white;
+}
+
+.count-down {
+    width: 100%;
+    height: 15px;
+    background-color: green;
+    margin: 0.5em 0;
+}
