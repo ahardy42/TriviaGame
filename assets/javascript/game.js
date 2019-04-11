@@ -110,10 +110,19 @@ $(document).ready(function () {
 
     // set interval function that counts down the seconds till you run out of time.
     function countDownTimerInterval() {
+        $(".count-down-timer").text("Time Remaining: " + countDown);
+        $(".count-down").css({"background-color": "green"});
             countDownTimer = setInterval(function() {
                 countDown--;
                 $(".count-down-timer").text("Time Remaining: " + countDown);
                 $(".count-down").animate({width: "-=6.7%"}, 100);
+                if (countDown >= 11) {
+                    $(".count-down").css({"background-color": "green"});
+                } else if (countDown < 11 && countDown >= 6) {
+                    $(".count-down").css({"background-color": "orange"});
+                } else {
+                    $(".count-down").css({"background-color": "red"});
+                }
             }, 1000);
     }
 

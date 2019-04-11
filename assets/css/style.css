@@ -72,9 +72,11 @@ button {
 
 .count-down {
     width: 100%;
-    height: 15px;
-    background-color: green;
+    height: 30px;
     margin: 0.5em 0;
+    background-color: green;
+    /* border-radius: 10px; */
+    /* border: 2px solid black; */
 }
 
 .count-down-timer {
