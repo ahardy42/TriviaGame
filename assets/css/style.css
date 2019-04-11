@@ -76,3 +76,11 @@ button {
     background-color: green;
     margin: 0.5em 0;
 }
+
+.count-down-timer {
+    text-align: center;
+}
+
+.stats {
+    border: none;
+}

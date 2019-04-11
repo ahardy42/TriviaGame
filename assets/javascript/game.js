@@ -22,6 +22,10 @@ $(document).ready(function () {
     var questionSwitch;
     var countDownTimer;
 
+    // stats
+    var correctAnswers = 0;
+    var incorrectAnswers = 0;
+
     // ----------------------------- classes and class instances -----------------------
     function Questions(question, answer, fakeAnswerOne, fakeAnswerTwo, fakeAnswerThree) {
         this.question = question;
@@ -108,6 +112,7 @@ $(document).ready(function () {
     function countDownTimerInterval() {
             countDownTimer = setInterval(function() {
                 countDown--;
+                $(".count-down-timer").text("Time Remaining: " + countDown);
                 $(".count-down").animate({width: "-=6.7%"}, 100);
             }, 1000);
     }
@@ -119,6 +124,23 @@ $(document).ready(function () {
         var questionSwitch = setTimeout(function () {
             if (index === randomQuestionArray.length - 1) {
                 // run code to go to final screen
+                // erase the paragraphs, h1 and h2 for the question and answers
+                $(".container").find(".time-up").remove();
+                $(".question").children().remove();
+                $(".answers").children().remove();
+                // set answer arrays to empty arrays before running the randomizers 
+                randomAnswerArray.length = 0;
+                answerArray.length = 0;
+                // show correct and incorrect answers
+                $(".count-down").remove();
+                $(".count-down-timer").remove();
+                $(".question").append("<h2 class='final-screen-h2'>You're Done!</h2>");
+                $(".answers").append("<p class='stats'>Correct Answers: " + correctAnswers + "</p>");
+                $(".answers").append("<p class='stats'>Incorrect Answers: " + incorrectAnswers + "</p>");
+                $(".answers").append("<p class='stats'>Percent Correct: " + correctAnswers/(correctAnswers + incorrectAnswers)*100 + "%</p>");
+                $(".answers").append("<button class='reset' type='button'>Start Again?</button>");
+
+
             } else {
                 // set the current question
                 currentQuestion = randomQuestionArray[index];
@@ -162,26 +184,28 @@ $(document).ready(function () {
         containerDiv.append("<div class='question'></div>");
         containerDiv.append("<div class='answers'></div>");
         containerDiv.addClass("cheese");
+        $(".question").after("<div class='count-down-timer'></div>");
         $(".question").after("<div class='count-down'></div>");
         questionRandomizer();
         currentQuestion = randomQuestionArray[questionIndex];
         currentQuestion.answerDisplay();
         currentQuestion.questionDisplay();
-        questionIndex++;
     });
 
     $("body").on("click", ".answer-paragraph", function () {
         clearInterval(countDownTimer);
         clearTimeout(questionTimerVar);
+        questionIndex++;
         questionSwitchTimout(questionIndex);
         if ($(this).text() === currentQuestion.answer) {
             $(".question").before("<h1 class='time-up'>Correct!</h1>");
             $(this).css({ "background-color": "green" });
+            correctAnswers++;
         } else {
             $(".question").before("<h1 class='time-up'>Wrong!</h1>");
             $(this).css({ "background-color": "red" });
+            incorrectAnswers++;
         }
-        questionIndex++;
     });
 
 
