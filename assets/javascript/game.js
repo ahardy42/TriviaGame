@@ -29,22 +29,31 @@ $(document).ready(function () {
 
     // ----------------------------- page building code ---------------------------------
     // the elements of the page, not created in a class method, which will be added later, go here
+    // creating the iframe for the hilarious Yellow Ledbetter misheard lyrics video
     var iframeDiv = $("<div class='iframe-container'>");
     var iframe = $("<iframe width='560' height='315' src='https://www.youtube.com/embed/xLd22ha_-VU' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen>");
+    var iframeCaption = $("<p>Check out this hilarious video!</p>");
     iframeDiv.append(iframe);
+    iframeDiv.append(iframeCaption);
+    // creating the div to hold questions, answers and timer information
     var containerDiv = $(".container");
     var headerOne = $("<h3 class='time-up'>");
     headerOne.text("????");
+    // final screen header
     var finalScreenHeader = $("<h2 class='final-screen-h2'>");
     finalScreenHeader.text("You're Done!");
+    // paragraph for stats at the end of the game
     var correctAnswersParagraph = $("<p class='stats'>");
     var incorrectAnswersParagraph = $("<p class='stats'>");
+    // function to determine how you did in the game
     function percentageCorrect() {
         percentCorrect = correctAnswers / (correctAnswers + incorrectAnswers) * 100;
     } 
     var PercentCorrectParagraph = $("<p class='stats'>");  
+    // this button will reset and begin the game over again
     var resetButton = $("<button class='reset' id='reset-button' type='button'>");
     resetButton.text("Start Again?");
+    // the common set of commands that create the final screen
     function finalScreen() {
         percentageCorrect()
         $(".count-down").remove();
@@ -60,12 +69,13 @@ $(document).ready(function () {
         $(".answers").append(resetButton);
         questionIndex = 0;
     }
+    // more page creation stuff - these are divs that hold info that gets created by each instance of the class
     var questionDiv = $("<div class='question'>");
     var answerDiv = $("<div class='answers'>");
     var countDownDiv = $("<div class='count-down-timer'>");
     var countDownNumDiv = $("<div class='count-down'>");
 
-
+    // common commands that start the game.  used in the intial button click event, and reset button click
     function startGame() {
         questionTimer();       
         $(".question").before(headerOne);  
@@ -132,6 +142,7 @@ $(document).ready(function () {
         }
     }
 
+    // creating instances of the class "Questions" with some Q/A about pearl jam lyrics
     var questionObjectOne = new Questions("Corduroy: chorus two, line two", "They can buy but can't put on my clothes", "Bacon by the can, put on my clothes", "Thinkin' 'bout the cancer on my clothes", "Achin' by the candle on my clothes");
     var questionObjectTwo = new Questions("Corduroy: verse one, line one", "The Waiting Drove Me Mad", "The waiting trophy man", "Stop wasting trophies, man");
     var questionObjectThree = new Questions("Daughter: verse one, line one", "Alone, listless", "Alone, breastless", "Alone, this lass", "Alone, this list");
@@ -142,7 +153,7 @@ $(document).ready(function () {
     var questionObjectEight = new Questions("Yellow Ledbetter: verse one line five", "On a weekend wanna wish it all away", "On a wheel, on a wizard, on a whale", "???????", "I wanna wheel, Imma wiz along the way");
     var questionObjectNine = new Questions("Why Go: chorus", "Why go home?", "I go home", "White girl ho!", "Rhino horn");
     
-
+    // creating an array from the resulting clas instances
     questionArray.push(questionObjectOne, questionObjectTwo, questionObjectThree, questionObjectFour, questionObjectFive, questionObjectSix, questionObjectSeven, questionObjectEight, questionObjectNine);
 
     // ----------------------------- global functions ------------------------------------
@@ -161,6 +172,7 @@ $(document).ready(function () {
             questionIndex++;
             questionSwitchTimout(questionIndex);
             clearInterval(countDownTimer);
+            incorrectAnswers++;
         }, countDown * 1000 + 100);
     }
 
@@ -184,7 +196,6 @@ $(document).ready(function () {
 
     // timer function to switch the question (three seconds)
     function questionSwitchTimout(index) {
-        console.log("you started the next question timer");
         // checks to see if we're at the end of the array
         var questionSwitch = setTimeout(function () {
             if (index === randomQuestionArray.length - 1) {
@@ -205,7 +216,7 @@ $(document).ready(function () {
                 headerOne.text("????");
                 $(".question").children().remove();
                 $(".answers").children().remove();
-                // set answer arrays to empty arrays before running the randomizers 
+                // set answer arrays to empty arrays before running the randomizers to randomize the next set of answers
                 randomAnswerArray.length = 0;
                 answerArray.length = 0;
                 // display question
@@ -215,7 +226,6 @@ $(document).ready(function () {
                 // start the next timer
                 questionTimer();
             }
-            console.log("percentage correct is", percentageCorrect());
         }, 4000);
     }
 
@@ -230,6 +240,7 @@ $(document).ready(function () {
     }
 
     // ----------------------------- event listeners -------------------------------------
+    // start button click listener. fades out the header and button and then displays the current question
     $("#start-button").on("click", function () {
         $("#start-button").fadeOut();
         $("header").fadeOut();
@@ -240,7 +251,7 @@ $(document).ready(function () {
         startGame();
     });
 
-    // on click for the answer paragraphs
+    // on click for the answer paragraphs. does some styling depending on whether you're right or not. 
     $("body").on("click", ".answer-paragraph", function () {
         clearInterval(countDownTimer);
         clearTimeout(questionTimerVar);
@@ -252,6 +263,7 @@ $(document).ready(function () {
             headerOne.text("Correct!");
             headerOne.animate({ "opacity": "1" });
             $(this).css({ "background-color": "green" });
+            // increment the correct answer count
             correctAnswers++;
         } else {
             headerOne.animate({ "opacity": "0" });
@@ -259,6 +271,7 @@ $(document).ready(function () {
             headerOne.animate({ "opacity": "1" });
             currentQuestion.correctAnswerStyler();
             $(this).css({ "background-color": "red", "color": "black" });
+            // increment the incorrect answer count
             incorrectAnswers++;
         }
     });
@@ -284,20 +297,4 @@ $(document).ready(function () {
         randomQuestionArray = [];
         startGame();
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 });

@@ -114,6 +114,7 @@ button:hover {
 }
 
 .final-screen-h2 {
+    font-size: 2em;
     font-family: 'Roboto', sans-serif; 
     font-weight: 900;
     color: #d61d3d; 
@@ -122,6 +123,11 @@ button:hover {
 .stats {
     border: none;
     margin: 1em;
+}
+
+#reset-button {
+    width: 35%;
+    margin: auto;
 }
 
 iframe {
