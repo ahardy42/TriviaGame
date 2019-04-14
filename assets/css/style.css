@@ -1,27 +1,43 @@
 html {
     height: 100%;
+    background: url(../images/pearl-jam-Cover.jpg) no-repeat center center fixed;
 }
 
 body {
-    background-image: url(../images/body-background.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
     box-sizing: border-box;
     min-height: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-family: 'Indie Flower', cursive;
+    font-family: 'Montserrat', sans-serif;
 }
 
 header {
-    text-align: center;
+    display: flex;
+    flex-direction: row;
     height: 20%;
     width: 100%;
 }
 
+h1.header {
+    justify-self: flex-start;
+    width: 55%;
+    color: #d61d3d;
+}
+
+h3.header {
+    justify-self: flex-end;
+}
+
 h1 {
     font-size: 3em;
+    padding: 0.5em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+}
+
+h3 {
+    font-size: 2em;
     padding: 0.5em;
 }
 
@@ -29,8 +45,9 @@ h1 {
     margin: auto;
 }
 
-.container.cheese {
-    background-image: url(../images/div-background.jpg);
+.container.pearl-jam {
+    background-color: #737272CC;
+    /* opacity: 0.8; */
     justify-self: center;
     width: 80%;
     padding: 1em;
@@ -41,9 +58,20 @@ h1 {
 }
 
 button {
+    font-family: 'Roboto', sans-serif;
     font-size: 1.5em;
-    height: 100px;
-    width: 300px;
+    width: 100%;
+    padding: .5em;
+    color: #d61d3d;
+    background-color: #737373;
+    border: 5px solid #5C5B5C;
+    opacity: 0.8;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #5C5B5C;
+    border: 5px solid #737373;
 }
 
 .question {
@@ -57,17 +85,21 @@ button {
     padding: 0.5em;
 }
 
-.answers > p {
+.answer-paragraph {
     padding: 0.25em;
     border: 2px solid black;
     border-radius: 10px;
     margin: 0.5em;
 }
 
-.answers > p:hover {
+.answer-paragraph:hover {
     background-color: black;
     opacity: 0.6;
     color: white;
+}
+
+.time-out {
+    font-family: 'Roboto', sans-serif; 
 }
 
 .count-down {
@@ -75,14 +107,23 @@ button {
     height: 30px;
     margin: 0.5em 0;
     background-color: green;
-    /* border-radius: 10px; */
-    /* border: 2px solid black; */
 }
 
 .count-down-timer {
     text-align: center;
 }
 
+.final-screen-h2 {
+    font-family: 'Roboto', sans-serif; 
+    font-weight: 900;
+    color: #d61d3d; 
+}
+
 .stats {
     border: none;
+    margin: 1em;
+}
+
+iframe {
+    margin-top: 1em;
 }

@@ -25,6 +25,57 @@ $(document).ready(function () {
     // stats
     var correctAnswers = 0;
     var incorrectAnswers = 0;
+    var percentCorrect = 0;
+
+    // ----------------------------- page building code ---------------------------------
+    // the elements of the page, not created in a class method, which will be added later, go here
+    var iframeDiv = $("<div class='iframe-container'>");
+    var iframe = $("<iframe width='560' height='315' src='https://www.youtube.com/embed/xLd22ha_-VU' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen>");
+    iframeDiv.append(iframe);
+    var containerDiv = $(".container");
+    var headerOne = $("<h3 class='time-up'>");
+    headerOne.text("????");
+    var finalScreenHeader = $("<h2 class='final-screen-h2'>");
+    finalScreenHeader.text("You're Done!");
+    var correctAnswersParagraph = $("<p class='stats'>");
+    var incorrectAnswersParagraph = $("<p class='stats'>");
+    function percentageCorrect() {
+        percentCorrect = correctAnswers / (correctAnswers + incorrectAnswers) * 100;
+    } 
+    var PercentCorrectParagraph = $("<p class='stats'>");  
+    var resetButton = $("<button class='reset' id='reset-button' type='button'>");
+    resetButton.text("Start Again?");
+    function finalScreen() {
+        percentageCorrect()
+        $(".count-down").remove();
+        $(".count-down-timer").remove();
+        $(".question").append(finalScreenHeader);
+        $(".question").append(iframeDiv);
+        correctAnswersParagraph.html("Correct Answers: " + correctAnswers);
+        $(".answers").append(correctAnswersParagraph);
+        incorrectAnswersParagraph.html("Incorrect Answers: " + incorrectAnswers);
+        $(".answers").append(incorrectAnswersParagraph);
+        PercentCorrectParagraph.html("Percent Correct: " + percentCorrect);
+        $(".answers").append(PercentCorrectParagraph);
+        $(".answers").append(resetButton);
+        questionIndex = 0;
+    }
+    var questionDiv = $("<div class='question'>");
+    var answerDiv = $("<div class='answers'>");
+    var countDownDiv = $("<div class='count-down-timer'>");
+    var countDownNumDiv = $("<div class='count-down'>");
+
+
+    function startGame() {
+        questionTimer();       
+        $(".question").before(headerOne);  
+        $(".question").after(countDownDiv);
+        $(".question").after(countDownNumDiv);
+        questionRandomizer();
+        currentQuestion = randomQuestionArray[questionIndex];
+        currentQuestion.answerDisplay();
+        currentQuestion.questionDisplay();
+    }
 
     // ----------------------------- classes and class instances -----------------------
     function Questions(question, answer, fakeAnswerOne, fakeAnswerTwo, fakeAnswerThree) {
@@ -37,7 +88,9 @@ $(document).ready(function () {
         // methods
         // display the question on the screen
         this.questionDisplay = function () {
-            $(".question").append("<h2 class='question-header2'>" + this.question + "</h2>");
+            var questionHeader = $("<h2 class='question-header2'>");
+            questionHeader.text(this.question);
+            $(".question").append(questionHeader);
         }
 
         //display the answers in a random order
@@ -52,7 +105,11 @@ $(document).ready(function () {
             // grab the element you want to display the random answer array in, and do a forEach to create a new <p> with the 
             // array element. 
             randomAnswerArray.forEach(function (answer) {
-                $(".answers").append("<p class='answer-paragraph'>" + answer + "</p>");
+                if (answer !== undefined) {
+                    var answerParagraph = $("<p class='answer-paragraph'>");
+                    answerParagraph.text(answer);
+                    $(".answers").append(answerParagraph);
+                }
             });
         }
 
@@ -75,18 +132,18 @@ $(document).ready(function () {
         }
     }
 
-    var questionObjectOne = new Questions("How many pounds of milk does it take to make one pound of cheese?", "10 pounds", "8 pounds", "20 pounds", "42 pounds");
-    var questionObjectTwo = new Questions("Which state produces over 25% of the cheese in this country?", "Wisconsin", "New York", "California", "Delaware");
-    var questionObjectThree = new Questions("What makes some cheddar cheese orange in color?", "Typically Annato, which is derived from the seeds of the achiote tree", "Freshly ground orange rind, dipped in sulfuric acid.", "Melted traffic cones", "Most cheese is colored orange with small amounts of turmeric");
-    var questionObjectFour = new Questions("Is American Cheese really cheese?", "No, it is classified as \"Cheese Product\".", "Yes of course it is", "No, it's actually made of Soylent Green, died with annato", "Yes, and it is regarded by the French as the finest form of cheese ever made");
-    var questionObjectFive = new Questions("What are the crunchy bits you sometimes encounter in aged cheese?", "Those are composed of amino acid crystals", "They are ground up bits of lost lego steering wheels", "The are chunks of undisolved rennet", "What chunks?");
-    var questionObjectSix = new Questions("How many types of French cheese are there?", "Roughly 1,000", "Only one: American Cheese", "Close to 300,000", "Who cares, I hate cheese");
-    var questionObjectSeven = new Questions("Where is Västerbottensost cheese made?", "Burträsk, Sweden", "Madison, WI", "Hedgehog, KY", "Obviously you're not a golfer");
-    var questionObjectEight = new Questions("What is the maximum cheese content of Kraft singles?", "At most, 51%", "At least 90%", "Nobody Knows", "They struggle to get 33% in there.");
-    var questionObjectNine = new Questions("What is the most expensive cheese in the world?", "Pule cheese, which is made from the milk of Balkan Donkeys", "Yasserbatro Cheese which is made from the dung of the Peruvian muskrat", "Cheddar cheese wrapped in $100 bills", "Tatooine Womp Rat cheese which is made from womp rats bullseyed with a T-16");
-    var questionObjectTen = new Questions("What is the preferred cheese of Wallace, from Wallace and Gromit?", "Wensleydale Cheese", "Farmswoggle Cheese", "Kraft Singles", "Robotic Pants");
+    var questionObjectOne = new Questions("Corduroy: chorus two, line two", "They can buy but can't put on my clothes", "Bacon by the can, put on my clothes", "Thinkin' 'bout the cancer on my clothes", "Achin' by the candle on my clothes");
+    var questionObjectTwo = new Questions("Corduroy: verse one, line one", "The Waiting Drove Me Mad", "The waiting trophy man", "Stop wasting trophies, man");
+    var questionObjectThree = new Questions("Daughter: verse one, line one", "Alone, listless", "Alone, breastless", "Alone, this lass", "Alone, this list");
+    var questionObjectFour = new Questions("Daughter: first hook, line six", "She holds the hand that holds her down", "She holds the can, it holds her down", "She gnaws the hand that holds the pan");
+    var questionObjectFive = new Questions("Yellow Ledbetter: verse one line one", "Unsealed on a porch a letter sat", "By the seaside with some pork Ledbetter sat", "On the ceiling on a porch a letter sat", "On a ceilin', on a front side letter sat");
+    var questionObjectSix = new Questions("Yellow Ledbetter: verse one line three", "Once I saw her on a beach of weathered sand", "Once I saw her on a beach of little horses", "By the wayside on the frontside of the lawn", "One bizarre hymn, on a beach the little horses");
+    var questionObjectSeven = new Questions("Yellow Ledbetter: verse one, line nine", "I said, I don't know whether I'm the boxer or the bag", "I said 'I know what I wear. Is that a box or a bag?'", "I know I don't want to live in a Bachelor pad", "I said, I maaa na mumble muuuuuuuuuuuh ???");
+    var questionObjectEight = new Questions("Yellow Ledbetter: verse one line five", "On a weekend wanna wish it all away", "On a wheel, on a wizard, on a whale", "???????", "I wanna wheel, Imma wiz along the way");
+    var questionObjectNine = new Questions("Why Go: chorus", "Why go home?", "I go home", "White girl ho!", "Rhino horn");
+    
 
-    questionArray.push(questionObjectOne, questionObjectTwo, questionObjectThree, questionObjectFour, questionObjectFive, questionObjectSix, questionObjectSeven, questionObjectEight, questionObjectNine, questionObjectTen);
+    questionArray.push(questionObjectOne, questionObjectTwo, questionObjectThree, questionObjectFour, questionObjectFive, questionObjectSix, questionObjectSeven, questionObjectEight, questionObjectNine);
 
     // ----------------------------- global functions ------------------------------------
 
@@ -95,15 +152,14 @@ $(document).ready(function () {
     // creates a h1 above the question that says "time's up!"
     // then calls the 3 sec delay to set the next question
     function questionTimer() {
-        console.log("questionTimer is running");
         countDown = 15;
-        $(".count-down").animate({width: "100%"}, 10);
+        $(".count-down").animate({ width: "100%" }, 10);
         countDownTimerInterval();
         questionTimerVar = setTimeout(function () {
             currentQuestion.correctAnswerStyler();
-            $(".question").before("<h1 class='time-up'>Time's up!</h1>");
-            questionSwitchTimout(questionIndex);
+            headerOne.text("Time's Up!");
             questionIndex++;
+            questionSwitchTimout(questionIndex);
             clearInterval(countDownTimer);
         }, countDown * 1000 + 100);
     }
@@ -111,19 +167,19 @@ $(document).ready(function () {
     // set interval function that counts down the seconds till you run out of time.
     function countDownTimerInterval() {
         $(".count-down-timer").text("Time Remaining: " + countDown);
-        $(".count-down").css({"background-color": "green"});
-            countDownTimer = setInterval(function() {
-                countDown--;
-                $(".count-down-timer").text("Time Remaining: " + countDown);
-                $(".count-down").animate({width: "-=6.7%"}, 100);
-                if (countDown >= 11) {
-                    $(".count-down").css({"background-color": "green"});
-                } else if (countDown < 11 && countDown >= 6) {
-                    $(".count-down").css({"background-color": "orange"});
-                } else {
-                    $(".count-down").css({"background-color": "red"});
-                }
-            }, 1000);
+        $(".count-down").css({ "background-color": "green" });
+        countDownTimer = setInterval(function () {
+            countDown--;
+            $(".count-down-timer").text("Time Remaining: " + countDown);
+            $(".count-down").animate({ width: "-=6.7%" }, 100);
+            if (countDown >= 11) {
+                $(".count-down").css({ "background-color": "green" });
+            } else if (countDown < 11 && countDown >= 6) {
+                $(".count-down").css({ "background-color": "orange" });
+            } else {
+                $(".count-down").css({ "background-color": "red" });
+            }
+        }, 1000);
     }
 
     // timer function to switch the question (three seconds)
@@ -134,27 +190,19 @@ $(document).ready(function () {
             if (index === randomQuestionArray.length - 1) {
                 // run code to go to final screen
                 // erase the paragraphs, h1 and h2 for the question and answers
-                $(".container").find(".time-up").remove();
+                headerOne.remove();
                 $(".question").children().remove();
                 $(".answers").children().remove();
                 // set answer arrays to empty arrays before running the randomizers 
                 randomAnswerArray.length = 0;
                 answerArray.length = 0;
                 // show correct and incorrect answers
-                $(".count-down").remove();
-                $(".count-down-timer").remove();
-                $(".question").append("<h2 class='final-screen-h2'>You're Done!</h2>");
-                $(".answers").append("<p class='stats'>Correct Answers: " + correctAnswers + "</p>");
-                $(".answers").append("<p class='stats'>Incorrect Answers: " + incorrectAnswers + "</p>");
-                $(".answers").append("<p class='stats'>Percent Correct: " + correctAnswers/(correctAnswers + incorrectAnswers)*100 + "%</p>");
-                $(".answers").append("<button class='reset' type='button'>Start Again?</button>");
-
-
+                finalScreen();
             } else {
                 // set the current question
                 currentQuestion = randomQuestionArray[index];
                 // erase the paragraphs, h1 and h2 for the question and answers
-                $(".container").find(".time-up").remove();
+                headerOne.text("????");
                 $(".question").children().remove();
                 $(".answers").children().remove();
                 // set answer arrays to empty arrays before running the randomizers 
@@ -167,11 +215,11 @@ $(document).ready(function () {
                 // start the next timer
                 questionTimer();
             }
+            console.log("percentage correct is", percentageCorrect());
         }, 4000);
     }
 
-
-    // question randomizer 
+    // question randomizer creates a new array w/ questions in random order
     function questionRandomizer() {
         while (randomQuestionArray.length < questionArray.length) {
             var randomIndex = Math.floor(Math.random() * questionArray.length);
@@ -180,46 +228,62 @@ $(document).ready(function () {
             }
         }
     }
-    // ----------------------------- page building code ---------------------------------
-    var containerDiv = $(".container");
-
-
 
     // ----------------------------- event listeners -------------------------------------
     $("#start-button").on("click", function () {
-        questionTimer();
         $("#start-button").fadeOut();
         $("header").fadeOut();
-        containerDiv.append("<div class='question'></div>");
-        containerDiv.append("<div class='answers'></div>");
-        containerDiv.addClass("cheese");
-        $(".question").after("<div class='count-down-timer'></div>");
-        $(".question").after("<div class='count-down'></div>");
-        questionRandomizer();
-        currentQuestion = randomQuestionArray[questionIndex];
-        currentQuestion.answerDisplay();
-        currentQuestion.questionDisplay();
+        // builds the page out after clicking the start button
+        containerDiv.append(questionDiv);
+        containerDiv.append(answerDiv);
+        containerDiv.addClass("pearl-jam");
+        startGame();
     });
 
+    // on click for the answer paragraphs
     $("body").on("click", ".answer-paragraph", function () {
         clearInterval(countDownTimer);
         clearTimeout(questionTimerVar);
         questionIndex++;
         questionSwitchTimout(questionIndex);
         if ($(this).text() === currentQuestion.answer) {
-            $(".question").before("<h1 class='time-up'>Correct!</h1>");
+            // change the text of headerOne and show it
+            headerOne.animate({ "opacity": "0" });
+            headerOne.text("Correct!");
+            headerOne.animate({ "opacity": "1" });
             $(this).css({ "background-color": "green" });
             correctAnswers++;
         } else {
-            $(".question").before("<h1 class='time-up'>Wrong!</h1>");
-            $(this).css({ "background-color": "red" });
+            headerOne.animate({ "opacity": "0" });
+            headerOne.text("Wrong!");
+            headerOne.animate({ "opacity": "1" });
+            currentQuestion.correctAnswerStyler();
+            $(this).css({ "background-color": "red", "color": "black" });
             incorrectAnswers++;
         }
     });
 
-
-
-
+    /* reset the page button brings you back to the first question. 
+    so, you need to remove the paragraph and heading tags and then scramble the questions / answers and
+    display everything again. 
+    */
+    $("body").on("click", "#reset-button", function () {
+        // reset the ??? header screen
+        headerOne.text("????");
+        // remove you're done statement
+        finalScreenHeader.remove();
+        iframeDiv.remove();
+        // remove stats and reset stats
+        correctAnswersParagraph.remove();
+        incorrectAnswersParagraph.remove();
+        PercentCorrectParagraph.remove();
+        correctAnswers = 0;
+        incorrectAnswers = 0;
+        // remove button
+        resetButton.remove();
+        randomQuestionArray = [];
+        startGame();
+    });
 
 
 
